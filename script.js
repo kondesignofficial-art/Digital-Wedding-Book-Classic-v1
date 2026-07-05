@@ -60,6 +60,21 @@ const tracks = [
 
 const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector(".site-nav");
+const openingStartedAt = Date.now();
+
+function completeOpening() {
+  const elapsed = Date.now() - openingStartedAt;
+  const delay = Math.max(0, 1650 - elapsed);
+  window.setTimeout(() => {
+    document.body.classList.add("loaded");
+  }, delay);
+}
+
+if (document.readyState === "complete") {
+  completeOpening();
+} else {
+  window.addEventListener("load", completeOpening, { once: true });
+}
 
 navToggle.addEventListener("click", () => {
   const isOpen = document.body.classList.toggle("nav-open");
@@ -85,9 +100,13 @@ const revealObserver = new IntersectionObserver(
   { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
 );
 
-document.querySelectorAll(".reveal, [data-fade], .image-reveal, .gallery-item").forEach((element, index) => {
+function observeReveal(element, index = 0) {
   element.style.transitionDelay = `${Math.min(index % 6, 5) * 70}ms`;
   revealObserver.observe(element);
+}
+
+document.querySelectorAll(".reveal, [data-fade], .image-reveal, .gallery-item:not([hidden])").forEach((element, index) => {
+  observeReveal(element, index);
 });
 
 const sectionObserver = new IntersectionObserver(
@@ -181,6 +200,20 @@ document.getElementById("playlist").innerHTML = tracks
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = lightbox.querySelector("img");
 const lightboxClose = lightbox.querySelector(".lightbox-close");
+const galleryMoreButton = document.getElementById("gallery-more");
+
+if (galleryMoreButton) {
+  galleryMoreButton.addEventListener("click", () => {
+    document.querySelectorAll(".gallery-extra[hidden]").forEach((item, index) => {
+      item.hidden = false;
+      item.classList.add("is-added");
+      item.style.animationDelay = `${index * 110}ms`;
+      observeReveal(item, index);
+      window.setTimeout(() => item.classList.add("is-visible"), 40 + index * 110);
+    });
+    galleryMoreButton.parentElement.hidden = true;
+  });
+}
 
 document.querySelectorAll(".gallery-item").forEach((button) => {
   button.addEventListener("click", () => {

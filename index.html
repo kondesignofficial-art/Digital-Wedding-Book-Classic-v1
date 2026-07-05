@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class="opening" id="opening" aria-hidden="true">
+      <p>HAYATA &amp; MOMOKA</p>
+    </div>
     <header class="site-header" data-fade>
-      <a class="brand" href="#greeting" aria-label="Greetingへ移動">HAYATA &amp; MOMOKA</a>
+      <a class="brand" href="#hero" aria-label="Heroへ移動">HAYATA &amp; MOMOKA</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span></span>
         <span></span>
@@ -30,13 +33,30 @@
     </header>
 
     <main>
-      <section class="hero section-panel" id="greeting">
+      <section class="hero top-hero section-panel" id="hero" aria-label="HAYATA & MOMOKA Digital Wedding Book">
         <div class="parallax-frame hero-image" data-parallax>
           <img src="images/hero.jpg" alt="新郎新婦のメインフォト">
         </div>
         <div class="hero-copy">
+          <h1 class="hero-title" aria-label="HAYATA and MOMOKA">
+            <span>HAYATA</span>
+            <span>&amp;</span>
+            <span>MOMOKA</span>
+          </h1>
+          <p class="hero-meta">
+            <span>DIGITAL WEDDING BOOK</span>
+            <span>2029.06.24</span>
+            <span>THE WEDDING KYOTO</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="section greeting-section" id="greeting">
+        <div class="section-heading">
           <p class="eyebrow reveal">01</p>
-          <h1 class="reveal">Greeting</h1>
+          <h2 class="reveal">Greeting</h2>
+        </div>
+        <div class="greeting-copy reveal">
           <p class="lead reveal">
             本日はおいそがしい中、私たちの結婚式へお越しいただきありがとうございます。
             皆さまと同じ時間を過ごせることを、心から嬉しく思います。
@@ -202,10 +222,13 @@
           <button class="gallery-item reveal" data-full="images/gallery-04.jpg"><img src="images/gallery-04.jpg" alt="Gallery photo 04"></button>
           <button class="gallery-item reveal" data-full="images/gallery-05.jpg"><img src="images/gallery-05.jpg" alt="Gallery photo 05"></button>
           <button class="gallery-item reveal" data-full="images/gallery-06.jpg"><img src="images/gallery-06.jpg" alt="Gallery photo 06"></button>
-          <button class="gallery-item reveal" data-full="images/gallery-07.jpg"><img src="images/gallery-07.jpg" alt="Gallery photo 07"></button>
-          <button class="gallery-item reveal" data-full="images/gallery-08.jpg"><img src="images/gallery-08.jpg" alt="Gallery photo 08"></button>
-          <button class="gallery-item reveal" data-full="images/gallery-09.jpg"><img src="images/gallery-09.jpg" alt="Gallery photo 09"></button>
-          <button class="gallery-item reveal" data-full="images/gallery-10.jpg"><img src="images/gallery-10.jpg" alt="Gallery photo 10"></button>
+          <button class="gallery-item gallery-extra reveal" data-full="images/gallery-07.jpg" hidden><img src="images/gallery-07.jpg" alt="Gallery photo 07"></button>
+          <button class="gallery-item gallery-extra reveal" data-full="images/gallery-08.jpg" hidden><img src="images/gallery-08.jpg" alt="Gallery photo 08"></button>
+          <button class="gallery-item gallery-extra reveal" data-full="images/gallery-09.jpg" hidden><img src="images/gallery-09.jpg" alt="Gallery photo 09"></button>
+          <button class="gallery-item gallery-extra reveal" data-full="images/gallery-10.jpg" hidden><img src="images/gallery-10.jpg" alt="Gallery photo 10"></button>
+        </div>
+        <div class="gallery-more reveal">
+          <button class="outline-button" id="gallery-more" type="button">VIEW MORE</button>
         </div>
       </section>
 
