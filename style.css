@@ -896,6 +896,29 @@ dd {
   clip-path: inset(0 0 0 0);
 }
 
+.profile-block .image-reveal {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+.profile-block .image-reveal img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  clip-path: none;
+}
+
+.profile-block .image-reveal::after {
+  z-index: 2;
+  background: transparent;
+}
+
 .section {
   transition: opacity 700ms var(--ease);
 }
