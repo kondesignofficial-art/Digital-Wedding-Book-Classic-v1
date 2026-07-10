@@ -3,9 +3,9 @@ const tables = {
   B: { type: "友人卓", guests: ["伊藤 遼", "加藤 美穂", "吉田 海斗", "清水 彩香", "木村 優斗", "松本 杏奈"] },
   C: { type: "友人卓", guests: ["岡田 健太", "森 美月", "藤田 翔平", "橋本 梨花", "西村 翼", "石井 優花"] },
   D: { type: "友人卓", guests: ["田中 悠斗", "井上 七海", "山口 達也", "前田 彩乃", "林 大地", "近藤 美月"] },
-  E: { type: "身内卓", guests: ["中村 恒一", "中村 真理", "中村 裕子", "中村 健太", "山本 千秋", "山本 美和"] },
-  F: { type: "身内卓", guests: ["佐藤 正和", "佐藤 由美", "佐藤 翼", "佐藤 明日香", "鈴木 孝志", "鈴木 恵子"] },
-  G: { type: "身内卓", guests: ["山田 隆", "山田 洋子", "山田 千尋", "山田 拓海", "高橋 和也", "高橋 奈々"] }
+  E: { type: "親族席", guests: ["中村 恒一", "中村 真理", "中村 裕子", "中村 健太", "山本 千秋", "山本 美和"] },
+  F: { type: "親族席", guests: ["佐藤 正和", "佐藤 由美", "佐藤 翼", "佐藤 明日香", "鈴木 孝志", "鈴木 恵子"] },
+  G: { type: "親族席", guests: ["山田 隆", "山田 洋子", "山田 千尋", "山田 拓海", "高橋 和也", "高橋 奈々"] }
 };
 
 const menuData = {
@@ -201,10 +201,64 @@ const lightbox = document.getElementById("lightbox");
 const lightboxImage = lightbox.querySelector("img");
 const lightboxClose = lightbox.querySelector(".lightbox-close");
 const galleryMoreButton = document.getElementById("gallery-more");
+const galleryGrid = document.querySelector(".gallery-grid");
+const dynamicGalleryStart = 6;
+const dynamicGalleryEnd = 30;
+let dynamicGalleryItems = [];
+
+function imageExists(src) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(true);
+    image.onerror = () => resolve(false);
+    image.src = src;
+  });
+}
+
+function openLightbox(button) {
+  lightboxImage.src = button.dataset.full;
+  lightboxImage.alt = button.querySelector("img").alt;
+  lightbox.classList.add("is-open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("lightbox-open");
+}
+
+function createGalleryItem(src, number) {
+  const button = document.createElement("button");
+  button.className = "gallery-item gallery-extra reveal";
+  button.type = "button";
+  button.hidden = true;
+  button.dataset.full = src;
+
+  const image = document.createElement("img");
+  image.src = src;
+  image.alt = `Gallery photo ${String(number).padStart(2, "0")}`;
+  button.appendChild(image);
+  button.addEventListener("click", () => openLightbox(button));
+
+  return button;
+}
+
+async function setupDynamicGallery() {
+  if (!galleryMoreButton || !galleryGrid) return;
+
+  for (let number = dynamicGalleryStart; number <= dynamicGalleryEnd; number += 1) {
+    const src = `images/gallery-${String(number).padStart(2, "0")}.jpg`;
+    if (!(await imageExists(src))) break;
+
+    const item = createGalleryItem(src, number);
+    galleryGrid.appendChild(item);
+    dynamicGalleryItems.push(item);
+  }
+
+  galleryMoreButton.disabled = dynamicGalleryItems.length === 0;
+  galleryMoreButton.setAttribute("aria-disabled", String(dynamicGalleryItems.length === 0));
+}
 
 if (galleryMoreButton) {
   galleryMoreButton.addEventListener("click", () => {
-    document.querySelectorAll(".gallery-extra[hidden]").forEach((item, index) => {
+    if (galleryMoreButton.disabled) return;
+    dynamicGalleryItems.forEach((item, index) => {
       item.hidden = false;
       item.classList.add("is-added");
       item.style.animationDelay = `${index * 110}ms`;
@@ -215,13 +269,11 @@ if (galleryMoreButton) {
   });
 }
 
+setupDynamicGallery();
+
 document.querySelectorAll(".gallery-item").forEach((button) => {
   button.addEventListener("click", () => {
-    lightboxImage.src = button.dataset.full;
-    lightboxImage.alt = button.querySelector("img").alt;
-    lightbox.classList.add("is-open");
-    lightbox.setAttribute("aria-hidden", "false");
-    document.body.classList.add("lightbox-open");
+    openLightbox(button);
   });
 });
 
